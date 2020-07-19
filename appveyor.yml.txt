@@ -1,0 +1,18 @@
+﻿image: Visual Studio 2017
+configuration: Release
+
+install:
+  - git submodule update --init --recursive
+  # bundled .\.NuGet\NuGet.exe leads to error "SharpCompress’ already has a dependency defined for ‘NETStandard.Library’"
+#  - .\.NuGet\NuGet.exe restore
+  - nuget restore
+
+build_script: msbuild /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+
+test: off
+
+after_build:
+  - 7z a sw.7z %APPVEYOR_BUILD_FOLDER%\src\Setup\bin\Release\Setup.exe %APPVEYOR_BUILD_FOLDER%\src\Update\bin\Release\Update* %APPVEYOR_BUILD_FOLDER%\src\SyncReleases\bin\Release\SyncReleases*
+
+artifacts:
+  - path: sw.7z
