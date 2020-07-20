@@ -8,6 +8,7 @@ pool:
 trigger:
 - master
 - develop
+- test
 
 variables:
   solution: 'Squirrel.sln'
